@@ -1,11 +1,9 @@
 import { TicketcheckInterface } from "../../interface/ITicketcheck.ts";
-// import { TicketInterface } from "../../interface/ITicket.ts";
 
-const apiUrl = "http://localhost:8000";
+const apiUrl = "http://localhost:8000/api";  // ปรับให้ตรงกับเส้นทาง API
 
-
-//
-async function Checkin(TicketID: TicketcheckInterface) {
+// ฟังก์ชันสำหรับเช็คอินด้วย TicketID
+async function Checkin(TicketID: number) {
   const requestOptions = {
     method: "POST",
     headers: {
@@ -13,30 +11,26 @@ async function Checkin(TicketID: TicketcheckInterface) {
     },
     body: JSON.stringify({
       ticket_id: TicketID,
-      time_stamp: new Date().toISOString(), // Example of generating a timestamp
-      status: "Check in", // Replace with actual status
-      
+      time_stamp: new Date().toISOString(), // กำหนด timestamp
+      status: "Check in", // สถานะของการเช็คอิน
     }),
   };
 
-  let res = await fetch(`${apiUrl}/ticketcheck/`, requestOptions)
-    .then((response) => response.json())
-    .then((res) => {
-      if (res.message =="check in") {
-        return { status: true, message: "complete" };
-      } else {
-        return { status: false, message: "failed" };
-      }
-    })
-    .catch((error) => {
-      return { status: false, message: "failed" };
-    });
+  try {
+    const response = await fetch(`${apiUrl}/checkin/${TicketID}`, requestOptions);  // แก้ไขเส้นทางตรงนี้
+    const res = await response.json();
 
-  return res;
+    if (res.success) {
+      return { status: true, message: "complete" };
+    } else {
+      return { status: false, message: "failed" };
+    }
+  } catch (error) {
+    return { status: false, message: "failed" };
+  }
 }
 
-//
-
+// ฟังก์ชันสำหรับดึงข้อมูลทั้งหมดใน ticketcheck
 async function GetTicketcheck() {
   const requestOptions = {
     method: "GET",
@@ -45,22 +39,23 @@ async function GetTicketcheck() {
     },
   };
 
+  try {
+    const response = await fetch(`${apiUrl}/ticketcheck`, requestOptions);  // แก้ไขเส้นทางตรงนี้
+    const res = await response.json();
 
-  let res = await fetch(`${apiUrl}/ticketcheck`, requestOptions)
-    .then((response) => response.json())
-    .then((res) => {
-      if (res.data) {
-        return res.data;
-      } else {
-        return false;
-      }
-    });
-
-  return res;
+    if (res.data) {
+      return res.data;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching ticket check data:", error);
+    return false;
+  }
 }
 
-
-async function DeleteTicketcheckByID(id: Number | undefined) {
+// ฟังก์ชันสำหรับลบข้อมูลใน ticketcheck ตาม ID
+async function DeleteTicketcheckByID(id: number | undefined) {
   const requestOptions = {
     method: "DELETE",
     headers: {
@@ -68,20 +63,23 @@ async function DeleteTicketcheckByID(id: Number | undefined) {
     },
   };
 
-  let res = await fetch(`${apiUrl}/ticketcheck/${id}`, requestOptions)
-    .then((response) => response.json())
-    .then((res) => {
-      if (res.data) {
-        return res.data;
-      } else {
-        return false;
-      }
-    });
+  try {
+    const response = await fetch(`${apiUrl}/ticketcheck/${id}`, requestOptions);  // แก้ไขเส้นทางตรงนี้
+    const res = await response.json();
 
-  return res;
+    if (res.data) {
+      return res.data;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error deleting ticket check:", error);
+    return false;
+  }
 }
 
-async function GetTicketchecktById(id: Number | undefined) {
+// ฟังก์ชันสำหรับดึงข้อมูล ticketcheck ตาม ID
+async function GetTicketcheckById(id: number | undefined) {
   const requestOptions = {
     method: "GET",
     headers: {
@@ -89,49 +87,25 @@ async function GetTicketchecktById(id: Number | undefined) {
     },
   };
 
-  let res = await fetch(`${apiUrl}/ticketcheck/${id}`, requestOptions)
-    .then((response) => response.json())
-    .then((res) => {
-      if (res.data) {
-        return res.data;
-      } else {
-        return false;
-      }
-    });
+  try {
+    const response = await fetch(`${apiUrl}/ticketcheck/${id}`, requestOptions);  // แก้ไขเส้นทางตรงนี้
+    const res = await response.json();
 
-  return res;
+    if (res.data) {
+      return res.data;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching ticket check by ID:", error);
+    return false;
+  }
 }
 
-//สร้างข้อมูล ticketcheck
-
-
-// async function UpdateStudent(data: TicketcheckInterface) {
-//   const requestOptions = {
-//     method: "PATCH",
-//     headers: { 
-//       "Content-Type": "application/json" 
-//     },
-//     body: JSON.stringify(data),
-//   };
-
-//   let res = await fetch(`${apiUrl}/students`, requestOptions)
-//     .then((response) => response.json())
-//     .then((res) => {
-//       if (res.data) {
-//         return { status: true, message: res.data };
-//       } else {
-//         return { status: false, message: res.error };
-//       }
-//     });
-
-//   return res;
-// }
-
+// Export functions
 export {
   Checkin,
-
   GetTicketcheck,
   DeleteTicketcheckByID,
-  GetTicketchecktById,
-//   UpdateStudent,
+  GetTicketcheckById,
 };

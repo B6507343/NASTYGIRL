@@ -1,87 +1,56 @@
 import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
-import { Form, Input, Button,message } from "antd"; // Import Ant Design components
+import { Form, Input, Button, message } from "antd"; // Import Ant Design components
 import { PlusOutlined } from "@ant-design/icons"; // Import the icon
 import "./QrScanner.css"; // Import the CSS file
-import{Checkin} from "../../service/https/ticketcheck";
-import { TicketcheckInterface } from "../../interface/ITicketcheck.ts";
-import { TicketInterface } from "../../interface/ITicket.ts";
-
+import { Checkin } from "../../service/https/ticketcheck"; // Import the service that calls the backend
 
 const QrScanner: React.FC = () => {
   const [data, setData] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [form] = Form.useForm(); // Create a form instance
 
-
-  const handleError = (err: any) => {
-    console.error(err);
-    if (!data) {
-      setError("Error scanning QR code");
-    }
-  };
-
-  const handleScan = (scannedData: string | null) => {
-    console.log("Scanned Data:", scannedData);
-    if (scannedData) {
-      setData(scannedData);
-      setError(null);
-    } else if (!data) {
-      setError("No data found in QR code");
-    }
-  };
-
-  
-  // const newTicketcheck={
-  //   TicketID : Number(data),
-  //   TimeStamp: new Date().toISOString(),
-  //   Status: "Ok",
-  //   Member: 1
-    
-  // }
-
-  const handleSubmit = () => {
-    
-    if (Number(data)) {  
-      
-      console.log("Data submitted:", data);
-      message.success("Data submitted successfully!");
-      Checkin(Number(data));
-
-     
+  const handleSubmit = async () => {
+    if (Number(data)) {
+      try {
+        // ส่ง ticket_id ไปยัง backend ผ่าน Checkin function
+        const response = await Checkin(Number(data));
+        if (response.status) {
+          message.success("Data submitted successfully!");
+          form.resetFields(); // ล้างข้อมูลหลังจาก submit สำเร็จ
+        } else {
+          message.error("Failed to submit data.");
+        }
+      } catch (error) {
+        message.error("Error occurred while submitting data.");
+      }
     } else {
       message.error("No data to submit.");
     }
   };
- 
-  
-  
 
   return (
     <div className="container">
       <div className="scannerContainer">
         <h1>QR Code Scanner</h1>
         <QrReader
-          onResult={(result, error) => {
+          onResult={(result: any, error: any) => {
             if (result) {
-              const text = result.getText ? result.getText() : result.text || "";
-              handleScan(text);
+              const text = result?.text || result.getText?.() || "";
+              if (text) {
+                setData(text);
+              }
             }
-
             if (error) {
-              handleError(error);
+              console.error(error);
             }
           }}
-          className="qrReader" // Apply the CSS class
+          constraints={{ facingMode: "environment" }}
+          className="qrReader"
         />
 
         {/* Ant Design Form */}
-        <Form
-          form={form}
-          layout="vertical"
-          initialValues={{ ticketID: data }} // Set initial value to scanned data
-        >
-          <div className="input-button-container"> {/* Flexbox container */}
+        <Form form={form} layout="vertical">
+          <div className="input-button-container">
             <Form.Item
               label="Ticket ID"
               name="ticketID"
@@ -91,16 +60,23 @@ const QrScanner: React.FC = () => {
                   message: "Please Enter Ticket ID",
                 },
               ]}
-              style={{ flex: 1 }} // Make input take available space
+              style={{ flex: 1 }}
             >
-              <Input
-                placeholder="Please Enter Ticket ID"
-                allowClear
-                onChange={(e) => setData(e.target.value)} // Update state with input value
-              />
+             <Input
+  placeholder="Please Enter Ticket ID"
+  allowClear
+  value={data || ""}
+  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData(e.target.value)} // ระบุชนิดของ e ที่นี่
+/>
+
             </Form.Item>
 
-            <Button type="primary" onClick={handleSubmit}  icon={<PlusOutlined />} style={{ marginLeft: '10px' }}>
+            <Button
+              type="primary"
+              onClick={handleSubmit}
+              icon={<PlusOutlined />}
+              style={{ marginLeft: "10px" }}
+            >
               Enter
             </Button>
           </div>
@@ -111,4 +87,3 @@ const QrScanner: React.FC = () => {
 };
 
 export default QrScanner;
-

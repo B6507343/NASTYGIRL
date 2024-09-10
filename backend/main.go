@@ -16,23 +16,23 @@ func main() {
 	r := gin.Default()
 	r.Use(CORSMiddleware())
 
-	// Routes
-	router := r.Group("api")
-	router.POST("/tickectcheck", controller.Checkin)
+	// Group API Routes
+	router := r.Group("/api")
+	{
+		router.POST("/checkin/:ticket_id", controller.CreateTicketCheck)
+ // แก้ไขจาก tickectcheck เป็น ticketcheck
+	}
 
-	//
-	router.GET("/tickectcheck/:id", controller.GetTicketCheck)
-	router.DELETE("/tickectcheck/:id", controller.DeleteTicketcheck)
-
+	// Route สำหรับการเช็คสถานะของ API
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
 	})
 
 	// Run the server
 	r.Run("localhost:" + PORT)
-
 }
 
+// CORS Middleware เพื่อจัดการการเข้าถึงจาก client ต่าง ๆ
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
