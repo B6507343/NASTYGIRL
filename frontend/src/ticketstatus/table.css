@@ -1,0 +1,18 @@
+/* src/components/Table.css */
+.ticket-table {
+    width: 70%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #d3d3d3; /* Light grey background */
+}
+
+.ticket-table th, .ticket-table td {
+    border: 2px solid black; /* Thick black borders */
+    padding: 20px;
+    text-align: center;
+}
+
+.ticket-table th {
+    background-color: #d3d3d3; /* Light grey background for headers */
+    font-weight: bold;
+}

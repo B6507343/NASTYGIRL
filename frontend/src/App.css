@@ -1,0 +1,16 @@
+body, html, #root, .app {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: auto;
+    font-family: Arial, sans-serif;
+    background-color: #F8F7F1;
+    position: relative;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+}
+
+
