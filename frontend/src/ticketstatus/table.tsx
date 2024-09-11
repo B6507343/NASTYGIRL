@@ -1,46 +1,63 @@
-// src/components/Table.tsx
-import React from 'react';
-import './Table.css';
+import React, { useEffect, useState } from 'react';
+import { Table, message } from 'antd';
+import { GetTicketcheck } from "../../service/https/ticketcheck"; // แก้ไข path ให้ถูกต้องตามที่เก็บไฟล์นี้
+import "./table.css"; 
 
-const Table: React.FC = () => {
+const columns = [
+    {
+      title: 'CheckinID',
+      dataIndex: 'ID',
+      key: 'ID',
+      width: '20%', // กำหนดความกว้างให้แต่ละคอลัมน์
+    },
+    {
+      title: 'TicketID',
+      dataIndex: 'TicketID',
+      key: 'TicketID',
+      width: '30%',
+    },
+    {
+      title: 'Time_stamp',
+      dataIndex: 'TimeStamp',
+      key: 'TimeStamp',
+      width: '30%',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'Status',
+      key: 'Status',
+      width: '20%',
+    },
+  ];
+  
+  const TicketCheckTable: React.FC = () => {
+    const [data, setData] = useState([]);
+  
+    const fetchData = async () => {
+      const result = await GetTicketcheck();
+      console.log(result)
+  
+      if (result) {
+        setData(result); // ตั้งค่า state data ที่จะนำมาแสดงในตาราง
+      } else {
+        message.error('Failed to load data.');
+      }
+    };
+  
+    useEffect(() => {
+      fetchData(); // เรียกใช้ fetchData เมื่อ component ถูก mount
+    }, []);
+  
     return (
-        <table className="ticket-table">
-            <thead>
-                <tr>
-                    <th>Showtime</th>
-                    <th>Check in time</th>
-                    <th>ticket_id</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>10:00 AM</td>
-                    <td>9:45 AM</td>
-                    <td>12345</td>
-                    <td>Checked In</td>
-                </tr>
-                <tr>
-                    <td>12:00 PM</td>
-                    <td>11:45 AM</td>
-                    <td>12346</td>
-                    <td>Checked In</td>
-                </tr>
-                <tr>
-                    <td>2:00 PM</td>
-                    <td>1:45 PM</td>
-                    <td>12347</td>
-                    <td>Expire</td>
-                </tr>
-                <tr>
-                    <td>4:00 PM</td>
-                    <td>3:45 PM</td>
-                    <td>12348</td>
-                    <td>Checked In</td>
-                </tr>
-            </tbody>
-        </table>
+      <div className="table-container">
+        <Table
+          columns={columns}
+          dataSource={data}
+          rowKey="ID"
+          bordered // แสดงขอบรอบตาราง
+        />
+      </div>
     );
-};
+  };
 
-export default Table;
+export default TicketCheckTable;

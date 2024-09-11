@@ -1,6 +1,5 @@
 import React from 'react';
 import './MainContent.css';
-import ClearButton from '../layout/ClearButton';
 import Table from './table';
 
 
@@ -14,7 +13,6 @@ const MainContent: React.FC = () => {
             <br></br>
             <br></br>
             <Table />
-            <ClearButton />
             </center>
             
         </div>

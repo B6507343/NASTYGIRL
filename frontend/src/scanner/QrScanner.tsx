@@ -14,11 +14,16 @@ const QrScanner: React.FC = () => {
       try {
         // ส่ง ticket_id ไปยัง backend ผ่าน Checkin function
         const response = await Checkin(Number(data));
-        if (response.status) {
+        // const u = await Checkduplication(Number(data));
+        if (response.status ) {
           message.success("Data submitted successfully!");
           form.resetFields(); // ล้างข้อมูลหลังจาก submit สำเร็จ
-        } else {
-          message.error("Failed to submit data.");
+          setData(null)
+        }
+        else {
+          message.error("Already use !!");
+          form.resetFields();
+          setData(null)
         }
       } catch (error) {
         message.error("Error occurred while submitting data.");
@@ -34,12 +39,17 @@ const QrScanner: React.FC = () => {
         <h1>QR Code Scanner</h1>
         <QrReader
           onResult={(result: any, error: any) => {
-            if (result) {
-              const text = result?.text || result.getText?.() || "";
+            
+        if (result) {
+            const text = result?.text || result.getText?.() || "";
               if (text) {
                 setData(text);
+                form.setFieldsValue({ ticketID: text }); // Ensure field name matches
+                console.log(text); // Print the text instead of data for clarity
+              } else {
+                console.error("no data");
               }
-            }
+          }
             if (error) {
               console.error(error);
             }

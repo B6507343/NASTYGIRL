@@ -1,4 +1,4 @@
-import { TicketcheckInterface } from "../../interface/ITicketcheck.ts";
+//import { TicketcheckInterface } from "../../interface/ITicketcheck.ts";
 
 const apiUrl = "http://localhost:8000/api";  // ปรับให้ตรงกับเส้นทาง API
 
@@ -30,6 +30,8 @@ async function Checkin(TicketID: number) {
   }
 }
 
+
+
 // ฟังก์ชันสำหรับดึงข้อมูลทั้งหมดใน ticketcheck
 async function GetTicketcheck() {
   const requestOptions = {
@@ -40,7 +42,7 @@ async function GetTicketcheck() {
   };
 
   try {
-    const response = await fetch(`${apiUrl}/ticketcheck`, requestOptions);  // แก้ไขเส้นทางตรงนี้
+    const response = await fetch(`${apiUrl}/checkin`, requestOptions);  // แก้ไขเส้นทางตรงนี้
     const res = await response.json();
 
     if (res.data) {
@@ -53,6 +55,8 @@ async function GetTicketcheck() {
     return false;
   }
 }
+
+
 
 // ฟังก์ชันสำหรับลบข้อมูลใน ticketcheck ตาม ID
 async function DeleteTicketcheckByID(id: number | undefined) {
@@ -105,6 +109,7 @@ async function GetTicketcheckById(id: number | undefined) {
 // Export functions
 export {
   Checkin,
+  // Checkduplication,
   GetTicketcheck,
   DeleteTicketcheckByID,
   GetTicketcheckById,

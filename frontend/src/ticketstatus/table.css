@@ -1,18 +1,30 @@
-/* src/components/Table.css */
-.ticket-table {
-    width: 70%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    background-color: #d3d3d3; /* Light grey background */
-}
 
-.ticket-table th, .ticket-table td {
-    border: 2px solid black; /* Thick black borders */
-    padding: 20px;
-    text-align: center;
-}
 
-.ticket-table th {
-    background-color: #d3d3d3; /* Light grey background for headers */
+.table-container {
+    width: 100%;
+    max-width: 1000px; /* กำหนดขนาดสูงสุดของตาราง */
+    margin: auto; /* ตั้งให้ตารางอยู่กึ่งกลาง */
+    padding: 16px; /* เพิ่มระยะห่างภายใน */
+  }
+  
+  .ant-table {
+    border: 1px solid #f8f6f6; /* เส้นขอบของตาราง */
+    border-radius: 8px; /* มุมโค้งของตาราง */
+  }
+  
+  .ant-table-thead > tr > th {
+    background-color: #f0f0f0; /* สีพื้นหลังของหัวตาราง */
     font-weight: bold;
-}
+    text-align: center; /* จัดข้อความในหัวตารางให้อยู่กึ่งกลาง */
+    
+  }
+  
+  .ant-table-tbody > tr > td {
+    text-align: center; /* จัดข้อความในเซลล์ให้อยู่กึ่งกลาง */
+    padding: 8px; /* เพิ่มช่องว่างในเซลล์ */
+  }
+  
+  .ant-table-tbody > tr:hover {
+    background-color: #f5f5f5; /* สีพื้นหลังเมื่อเมาส์อยู่เหนือแถว */
+  }
+  

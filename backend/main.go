@@ -19,7 +19,10 @@ func main() {
 	// Group API Routes
 	router := r.Group("/api")
 	{
+		router.GET("/checkin/ticket_id", controller.CreateTicketCheck)
 		router.POST("/checkin/:ticket_id", controller.CreateTicketCheck)
+		router.GET("/checkin", controller.GetTicketChecks)
+
  // แก้ไขจาก tickectcheck เป็น ticketcheck
 	}
 

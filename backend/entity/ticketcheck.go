@@ -8,7 +8,7 @@ import (
 
 type TicketCheck struct {
 	gorm.Model
-	TicketID  uint
+	TicketID  uint `gorm:"uniqueIndex"` // Use uniqueIndex to enforce uniqueness
 	TimeStamp time.Time
 	Status    string
 

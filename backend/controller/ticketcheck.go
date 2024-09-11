@@ -36,3 +36,14 @@ func CreateTicketCheck(c *gin.Context) {
 	// ส่งข้อมูลกลับไปยัง client
 	c.JSON(http.StatusOK, gin.H{"success": true, "data": ticketCheck})
 }
+
+func GetTicketChecks(c *gin.Context) {
+	var ticketChecks []entity.TicketCheck
+
+	if err := config.DB().Preload("Ticket").Find(&ticketChecks).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": ticketChecks})
+}
