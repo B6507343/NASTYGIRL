@@ -5,6 +5,8 @@ import { PlusOutlined } from "@ant-design/icons"; // Import the icon
 import "./QrScanner.css"; // Import the CSS file
 import { Checkin } from "../../service/https/ticketcheck"; // Import the service that calls the backend
 
+
+
 const QrScanner: React.FC = () => {
   const [data, setData] = useState<string | null>(null);
   const [form] = Form.useForm(); // Create a form instance
@@ -15,15 +17,24 @@ const QrScanner: React.FC = () => {
         // ส่ง ticket_id ไปยัง backend ผ่าน Checkin function
         const response = await Checkin(Number(data));
         // const u = await Checkduplication(Number(data));
-        if (response.status ) {
+        
+        if (response.status && response.message === "complete") {
           message.success("Data submitted successfully!");
-          form.resetFields(); // ล้างข้อมูลหลังจาก submit สำเร็จ
-          setData(null)
-        }
-        else {
-          message.error("Already use !!");
+          form.resetFields(); // Clear the form after successful submission
+          setData(null);
+        } else if (response.message === "failed") {
+          message.error("Already used!");
           form.resetFields();
-          setData(null)
+          setData(null);
+        } else if (response.message === "Ticket not found") {
+          // Condition when the ticket ID is not found in the backend
+          message.error("Ticket not found !!");
+          form.resetFields();
+          setData(null);
+        } else {
+          message.error("Unexpected error occurred.");
+          form.resetFields();
+          setData(null);
         }
       } catch (error) {
         message.error("Error occurred while submitting data.");

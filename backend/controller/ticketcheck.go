@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"gorm.io/gorm"
 
 	"example.com/project/config"
 	"example.com/project/entity"
@@ -20,12 +21,36 @@ func CreateTicketCheck(c *gin.Context) {
 		return
 	}
 
+	// Check if the ticket ID exists
+    var ticket entity.Ticket
+    if err := config.DB().First(&ticket, ticketID).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"status": false, "error": "Ticket not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"status": false, "error": err.Error()})
+		}
+		return
+	}
+
+	var existingTicketCheck entity.TicketCheck
+	if err := config.DB().Where("ticket_id = ?", ticketID).First(&existingTicketCheck).Error; err == nil {
+		// If no error, it means a record already exists
+		c.JSON(http.StatusConflict, gin.H{"status": false, "error": "Ticket check already exists for this ticket ID"})
+		return
+	} else if err != gorm.ErrRecordNotFound {
+		// If there is an error other than "record not found", handle it
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "error": err.Error()})
+		return
+	}
+
 	// สร้างข้อมูล ticket check
 	ticketCheck := entity.TicketCheck{
 		TicketID:  uint(ticketID),
 		TimeStamp: time.Now(),
 		Status:    "Checked",
 	}
+	
+	
 
 	// บันทึกข้อมูลลงในฐานข้อมูล
 	if err := config.DB().Create(&ticketCheck).Error; err != nil {
@@ -47,3 +72,4 @@ func GetTicketChecks(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": ticketChecks})
 }
+

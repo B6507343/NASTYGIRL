@@ -1,9 +1,11 @@
-//import { TicketcheckInterface } from "../../interface/ITicketcheck.ts";
+// import { TicketcheckInterface } from "../../interface/ITicketcheck.ts";
+
+// import { message } from "antd";
 
 const apiUrl = "http://localhost:8000/api";  // ปรับให้ตรงกับเส้นทาง API
 
 // ฟังก์ชันสำหรับเช็คอินด้วย TicketID
-async function Checkin(TicketID: number) {
+async function Checkin(TicketID: Number) {
   const requestOptions = {
     method: "POST",
     headers: {
@@ -17,13 +19,15 @@ async function Checkin(TicketID: number) {
   };
 
   try {
-    const response = await fetch(`${apiUrl}/checkin/${TicketID}`, requestOptions);  // แก้ไขเส้นทางตรงนี้
+    const response = await fetch(`${apiUrl}/checkin/${TicketID}`, requestOptions);
     const res = await response.json();
 
     if (res.success) {
       return { status: true, message: "complete" };
-    } else {
+    } else if (response.status === 409) {
       return { status: false, message: "failed" };
+    } else {
+      return { status: false, message: "Ticket not found" };
     }
   } catch (error) {
     return { status: false, message: "failed" };

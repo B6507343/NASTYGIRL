@@ -8,10 +8,9 @@ import (
 
 type TicketCheck struct {
 	gorm.Model
-	TicketID  uint `gorm:"uniqueIndex"` // Use uniqueIndex to enforce uniqueness
+	TicketID  uint `gorm:"uniqueIndex , notnull"` // Use uniqueIndex to enforce uniqueness
 	TimeStamp time.Time
 	Status    string
 
-	// Member    Member       `gorm:"foreignKey:MemberID"`
-	Ticket Ticket `gorm:"foreignKey:TicketID"`
+	Ticket Ticket `gorm:"foreignKey:TicketID; references:ID"` // กำหนดความสัมพันธ์ Foreign Key
 }
