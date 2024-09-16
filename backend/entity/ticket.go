@@ -8,25 +8,19 @@ import (
 
 type Ticket struct {
 	gorm.Model
-	Point     int
-	Status 	string
+	Point    int
+	Status   string
 	MemberID uint
-	
-	Member   Member  `gorm:"foreignKey:MemberID"`
+
+	Member Member `gorm:"foreignKey:MemberID"`
 
 	// //FK
 	// ShowTimesID *uint
-	// ShowTime   ShowTimes `gorm:"foreignKey:ShowTimeID"`
-
-	// MemberID *uint
-	
+	// ShowTime    ShowTimes `gorm:"foreignKey:ShowTimeID"`
 
 	// PaymentID *uint
 	// Payment   *Payment `gorm:"foreignKey:PaymentID"`
 
-	// TicketCheckID *uint
-	// TicketCheck   TicketCheck `gorm:"foreignKey:TicketCheckID"`
-
-	//onetomany
+	// //onetomany
 	// Seat []Seat `gorm:"foreignKey:TicketID"`
 }

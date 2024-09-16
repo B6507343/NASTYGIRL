@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, message } from 'antd';
-import { GetTicketcheck } from "../../service/https/ticketcheck"; // แก้ไข path ให้ถูกต้องตามที่เก็บไฟล์นี้
-import "./table.css"; 
+import { GetTicketcheck } from "../service/https/ticketcheck"; // แก้ไข path ให้ถูกต้องตามที่เก็บไฟล์นี้
+import "./ticketstatus.css"; 
 
 const columns = [
     {

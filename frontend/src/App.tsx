@@ -1,11 +1,12 @@
 import React from 'react';
-import Header from './layout/Header';
-import Sidebar from './layout/Sidebar';
-import MainContent from './ticketstatus/MainContent';
-import Scanner from './scanner/Scanner';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import Table from './ticketstatus/ticketstatus';
+import QrScanner from './Qrscanner/QrScanner';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+
 
 
 
@@ -16,10 +17,10 @@ const App: React.FC = () => {
         <div className="app">
         <Sidebar /> 
             <Routes>
-                    <Route path="/scanner" element={<Scanner />} />
+                    <Route path="/scanner" element={<QrScanner />} />
                 </Routes> 
                 <Routes>
-                    <Route path="/ticketstatus" element={<MainContent />} />
+                    <Route path="/ticketstatus" element={<Table />} />
                 </Routes> 
             <Header />
             

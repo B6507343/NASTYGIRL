@@ -12,10 +12,11 @@
 /* ส่วนอื่นๆ ของตาราง */
 .table-container {
   width: 100%;
-  max-width: 1000px; /* กำหนดขนาดสูงสุดของตาราง */
-  margin: auto; /* ตั้งให้ตารางอยู่กึ่งกลาง */
-  padding: 16px; /* เพิ่มระยะห่างภายใน */
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 130px 16px 16px 16px; /* ขยับขึ้นไปข้างบนมากขึ้น */
 }
+
 
 .ant-table {
   /* border: 1px solid #000001; เส้นขอบของตาราง */

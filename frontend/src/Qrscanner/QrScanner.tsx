@@ -3,7 +3,7 @@ import { QrReader } from "react-qr-reader";
 import { Form, Input, Button, message } from "antd"; // Import Ant Design components
 import { PlusOutlined } from "@ant-design/icons"; // Import the icon
 import "./QrScanner.css"; // Import the CSS file
-import { Checkin } from "../../service/https/ticketcheck"; // Import the service that calls the backend
+import { Checkin } from "../service/https/ticketcheck"; // Import the service that calls the backend
 
 
 
@@ -47,6 +47,7 @@ const QrScanner: React.FC = () => {
   return (
     <div className="container">
       <div className="scannerContainer">
+        <br></br>
         <h1>QR Code Scanner</h1>
         <QrReader
           onResult={(result: any, error: any) => {
